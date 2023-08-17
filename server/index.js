@@ -1,12 +1,20 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv'
-import router from './routes/auth.js';
+const express = require('express');
+const dotenv = require('dotenv');
+const router = require('./routes/auth.js');
+const mongoose = require('mongoose');
+const User = require( './models/User.js');
+const cors = require('cors')
+const bodyParser = require('body-parser')
 const app = express();
-dotenv.config();
 const PORT = 3000
 
-app.use(router);
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+dotenv.config();
+app.use(cors());
+app.use("/server/auth",router);
+app.use(express.json())
+
 app.use('/home', (req, res)=>{
     res.send("from server");
 })
