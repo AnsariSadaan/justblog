@@ -1,8 +1,9 @@
-import express from 'express'
-import mongoose from 'mongoose'
+const express = require( 'express');
+const User = require('../models/User.js')
+// import mongoose from 'mongoose'
 
+// const User = mongoose.model('user');
 const router = express.Router();
-const User = mongoose.model("User");
 
 router.post('/register', (req, res)=>{
     const {username, email, password} = req.body;
@@ -30,4 +31,4 @@ router.post('/register', (req, res)=>{
 })
 
 
-export default router
+module.exports = router
