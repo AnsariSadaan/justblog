@@ -1,10 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv'
+import router from './routes/auth.js';
 const app = express();
 dotenv.config();
 const PORT = 3000
 
+app.use(router);
 app.use('/home', (req, res)=>{
     res.send("from server");
 })
