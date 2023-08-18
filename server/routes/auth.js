@@ -2,15 +2,17 @@ const router = require("express").Router();
 const User = require("../models/User");
 const bcryptjs = require("bcryptjs");
 
+
+//register
 router.post("/register", (req, res) => {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
         return res.status(422).json({ error: "SignUp:- Please add all details" })
     }
-    User.findOne({ email: email })
+    User.findOne({ email: email } && {username : username})
         .then((savedUser) => {
             if (savedUser) {
-                return res.status(422).json({ error: "User already Exists with this email" });
+                return res.status(422).json({ error: "User already Exists with this email or username" });
             }
             bcryptjs.hash(password, 12)
                 .then(hashedpassword => {
@@ -31,36 +33,24 @@ router.post("/register", (req, res) => {
         .catch(err => {
             console.log(err);
         })
-    
-        // try {
-        //     const salt = await bcrypt.genSalt(10);
-        //     const hashedPass = await bcrypt.hash(req.body.password, salt);
-        //     const newUser = new User({
-        //         username: req.body.username,
-        //         email: req.body.email,
-        //         password: hashedPass,
-        //     });
-    
-        //     const user = await newUser.save();
-        //     res.status(200).json(user);
-        // } catch (err) {
-        //     res.status(500).json(err);
-        // }
 });
 
-router.post('/login', (req, res) => {
+//login
+
+router.post('/login', async (req, res) => {
+
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(422).json({ error: "login :- please add all details" })
     }
-    User.findOne({ username: username }).then((savedUser) => {
+    const user = await User.findOne({ username: username }).then((savedUser) => {
         if (!savedUser) {
             return res.status(422).json({ error: "Invalid username or password" })
         }
         bcryptjs.compare(password, savedUser.password)
             .then(doMatch => {
                 if (doMatch) {
-                    res.json({ message: "successfully logged in" })
+                    res.status(200).json({messgae: "loggein successfully"})
                 } else {
                     return res.status(422).json({ error: "invalid username or Password" })
                 }
@@ -70,6 +60,8 @@ router.post('/login', (req, res) => {
             })
     })
 })
+
+
 
 
 module.exports = router;
