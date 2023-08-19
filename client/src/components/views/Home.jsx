@@ -2,25 +2,27 @@ import '../../App.css'
 import Header from '../Header'
 import Sidebar from './Sidebar'
 import Posts from './Posts'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useLocation } from 'react-router-dom'
 
 const Home = () => {
-    const [post, usePosts] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const {search} = useLocation();
+    // console.log(location);
 
     useEffect(()=>{
         const fetchPosts = async ()=>{
-            const res =await axios.get('/posts')
-            console.log(res);
+            const res = await axios.get("server/posts" + search) 
+            setPosts(res.data)
         }
         fetchPosts();
-    }, [])
+    }, [search])
     return (
         <>
             <Header />
             <div className='home'>
-                <Posts />
+                <Posts posts={posts} />
                 <Sidebar />
             </div>
         </>
