@@ -557,6 +557,44 @@
 
 /* Register.jsx start */
 
+.brand-logo,
+h2 {
+    font-family: 'Grand Hotel', cursive;
+}
+
+.mycard {
+    margin-top: 100px;
+}
+
+.auth-card {
+    padding: 20px;
+    max-width: 400px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.item {
+    width: 30%;
+    margin-top: 10px;
+}
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #42a5f5 !important;
+    box-shadow: 0 1px 0 0 #42a5f5 !important;
+}
+
+.home-card {
+    width: 550px;
+    height: max-content;
+    margin: 26px auto;
+}
+
 .register {
     height: calc(100vh - 40px);
     display: flex;
