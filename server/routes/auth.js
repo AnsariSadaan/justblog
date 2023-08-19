@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcryptjs = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 
 
 //register
 router.post("/register", (req, res) => {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
-        return res.status(422).json({ error: "SignUp:- Please add all details" })
+        return res.status(422).json({ error: "Please add all details" })
     }
     User.findOne({ email: email } && {username : username})
         .then((savedUser) => {
@@ -41,7 +42,7 @@ router.post('/login', async (req, res) => {
 
     const { username, password } = req.body;
     if (!username || !password) {
-        return res.status(422).json({ error: "login :- please add all details" })
+        return res.status(422).json({ error: "Please add all details" })
     }
     const user = await User.findOne({ username: username }).then((savedUser) => {
         if (!savedUser) {
@@ -50,9 +51,13 @@ router.post('/login', async (req, res) => {
         bcryptjs.compare(password, savedUser.password)
             .then(doMatch => {
                 if (doMatch) {
-                    res.status(200).json({messgae: "loggein successfully"})
+                    //res.status(200).json({messgae: "Loggedin successfully"})
+                    const token = jwt.sign({_id:savedUser._id}, process.env.SECRET_VALUES)
+                    const {_id, username, password} = savedUser;
+                    res.json({ token, user: { _id, username, password } })
+                    console.log(token)
                 } else {
-                    return res.status(422).json({ error: "invalid username or Password" })
+                    return res.status(422).json({ error: "Invalid username or Password" })
                 }
             })
             .catch(err => {
