@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 
 
+
 //register
 router.post("/register", (req, res) => {
     const { username, email, password } = req.body;
@@ -70,3 +71,6 @@ router.post('/login', async (req, res) => {
 
 
 module.exports = router;
+
+
+//https://api.cloudinary.com/instabookcloudsadaan/image/upload/
